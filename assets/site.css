@@ -1,0 +1,247 @@
+/* ==========================================================================
+   Dead Thinkers — holding page layout
+   One screen, no scroll. Every visual constant comes from tokens.css.
+   ========================================================================== */
+
+/* --- Self-hosted body face --------------------------------------------------
+   If the woff2 is absent the @font-face simply fails and the stack in
+   --face-body falls through to the machine's own old-style serif. Nothing
+   breaks, and no request ever leaves the visitor's browser either way. */
+@font-face {
+  font-family: "EB Garamond";
+  src: url("fonts/eb-garamond-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "EB Garamond";
+  src: url("fonts/eb-garamond-400-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: var(--frame);
+  /* Reserve the colophon's band so the sheet can never sit under it. */
+  padding-bottom: calc(var(--frame) + 1.7rem);
+
+  font-family: var(--face-body);
+  font-size: var(--t-body);
+  line-height: var(--lead-body);
+  color: var(--ink);
+
+  /* Paper photograph over the paper colour — absent asset degrades to colour. */
+  background-color: var(--paper);
+  background-image: url("paper-ground.png");
+  background-size: cover;
+  background-position: center;
+
+  text-rendering: optimizeLegibility;
+}
+
+/* ==========================================================================
+   SECTION — the sheet
+   Two columns on a wide screen, stacked on a narrow one. Vertically centred
+   so the page reads as one composed leaf rather than a document that begins
+   at the top edge.
+   ========================================================================== */
+
+.sheet {
+  width: min(100%, 66rem);
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.4rem, 4vw, 3.4rem);
+}
+
+@media (max-width: 860px), (max-height: 560px) {
+  .sheet { grid-template-columns: 1fr; gap: var(--s3); }
+}
+
+/* ==========================================================================
+   SECTION — frontispiece
+   The vanitas plate. Holds its aspect whether or not the art has landed;
+   the placeholder device inside is switched off by .has-art.
+   ========================================================================== */
+
+.frontispiece {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  background-color: var(--plate);
+  background-image: url("hero-vanitas.png");
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--radius);
+
+  /* An engraved plate mark: hairline rule inset from a wider paper margin. */
+  box-shadow:
+    0 0 0 1px var(--rule),
+    0 0 0 clamp(6px, 1.1vw, 12px) var(--paper-deep),
+    0 0 0 calc(clamp(6px, 1.1vw, 12px) + 1px) var(--rule),
+    0 clamp(6px, 1.4vw, 16px) clamp(14px, 3vw, 34px) rgba(43, 32, 24, 0.22);
+
+  display: grid;
+  place-items: center;
+}
+
+@media (max-width: 860px), (max-height: 560px) {
+  .frontispiece { aspect-ratio: 16 / 7; }
+}
+/* A short phone has no room for a wide plate and the words both. The plate
+   narrows rather than disappearing — the art is the reason to stay. */
+@media (max-width: 860px) and (max-height: 740px) {
+  .frontispiece { aspect-ratio: 16 / 5; }
+}
+
+.plate-device {
+  color: var(--rule);
+  font-size: var(--t-small);
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 2.2;
+  opacity: 0.72;
+  padding: var(--s3);
+}
+.plate-device em {
+  display: block;
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: var(--t-fine);
+  opacity: 0.8;
+}
+.frontispiece.has-art .plate-device { display: none; }
+
+/* ==========================================================================
+   SECTION — the text column
+   ========================================================================== */
+
+.leaf { max-width: var(--measure); }
+
+/* Set on one line. Stacking it cost ~100px of fold on every laptop screen,
+   and letterspaced caps carry the engraved-titlepage feel without the height. */
+.masthead {
+  margin: 0;
+  font-size: var(--t-masthead);
+  font-weight: 400;
+  line-height: var(--lead-tight);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  text-indent: 0.13em;   /* balance the trailing letterspace */
+  white-space: nowrap;
+}
+
+.rule {
+  height: 1px;
+  border: 0;
+  margin: var(--s3) 0;
+  background: linear-gradient(
+    to right,
+    var(--rule) 0%, var(--rule) 62%, transparent 100%
+  );
+}
+
+.epitaph {
+  margin: 0 0 var(--s3);
+  font-size: var(--t-lede);
+  font-style: italic;
+  line-height: 1.34;
+  letter-spacing: var(--track-lede);
+  color: var(--ink);
+}
+
+.thesis { margin: 0 0 var(--s3); color: var(--ink-soft); }
+
+/* --- What's coming: three beats, set as a marginal list ------------------- */
+.beats {
+  margin: 0 0 var(--s4);
+  padding: 0;
+  list-style: none;
+  color: var(--ink-soft);
+}
+.beats li {
+  position: relative;
+  padding-left: 1.5em;
+  margin-bottom: var(--s1);
+}
+/* An engraved hairline rather than a fleuron glyph. A ❦ at this size renders
+   as a smudge, and which smudge depends on whichever serif the machine has. */
+.beats li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.78em;
+  width: 0.9em;
+  height: 1px;
+  background: var(--rule);
+}
+.beats strong { color: var(--ink); font-weight: 400; }
+
+/* --- The seal: the one piece of wax on the page --------------------------- */
+.seal {
+  display: inline-block;
+  color: var(--wax);
+  text-decoration: none;
+  font-size: var(--t-body);
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.62em 1.2em 0.58em;
+  border: 1px solid var(--wax);
+  border-radius: var(--radius);
+  transition: background-color 140ms ease, color 140ms ease;
+}
+.seal:hover,
+.seal:focus-visible {
+  background-color: var(--wax);
+  color: var(--paper);
+  outline: none;
+}
+.seal:focus-visible { box-shadow: 0 0 0 3px rgba(140, 28, 19, 0.28); }
+
+.aside {
+  margin: var(--s2) 0 0;
+  font-size: var(--t-small);
+  font-style: italic;
+  color: var(--ink-faint);
+}
+
+/* ==========================================================================
+   SECTION — footer
+   Pinned to the frame so it never competes for the fold.
+   ========================================================================== */
+
+.colophon {
+  position: fixed;
+  left: var(--frame);
+  right: var(--frame);
+  bottom: calc(var(--frame) * 0.55);
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--s2);
+
+  font-size: var(--t-fine);
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+}
+.colophon a { color: inherit; }
+
+/* Deliberately stays fixed at every height. Making it static on short screens
+   added flow height at exactly the viewport where there was none to give. */
+
+/* Dark-mode browsers force-invert a cream page and the ink reads white.
+   Declaring the scheme keeps the paper as paper. */
+:root { color-scheme: only light; }
