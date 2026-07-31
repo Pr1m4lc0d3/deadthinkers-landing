@@ -7,27 +7,42 @@
 <title>Dead Thinkers — the dead still have something to say</title>
 <meta name="description" content="A wiki of history's great minds that talks back. Read the page, then speak with the mind itself — free, with your own key, and nothing collected.">
 
-<link rel="canonical" href="https://deadthinkers.com/">
+<!-- ⚠ PRE-DNS. Every absolute URL below points at the GitHub Pages project URL,
+     because that is where this page actually resolves today. deadthinkers.com
+     does not serve yet, and an og:image on a dead host renders as a broken card.
+     WHEN DNS LANDS: flip all four to https://deadthinkers.com/ and drop the
+     noindex. Until then noindex keeps the temporary URL out of the index, so
+     the real domain never has to compete with it. -->
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://pr1m4lc0d3.github.io/deadthinkers-landing/">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://deadthinkers.com/">
+<meta property="og:url" content="https://pr1m4lc0d3.github.io/deadthinkers-landing/">
 <meta property="og:title" content="Dead Thinkers — the dead still have something to say">
 <meta property="og:description" content="A wiki of history's great minds that talks back. Read the page, then speak with the mind itself — free, with your own key, and nothing collected.">
+<meta property="og:image" content="https://pr1m4lc0d3.github.io/deadthinkers-landing/assets/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A candlelit vanitas still life — skull, inkwell, quill and a wax-sealed letter — beneath the words Dead Thinkers.">
 <meta name="twitter:card" content="summary_large_image">
-<!-- og:image is deliberately absent until assets/og-card.png exists.
-     A 404 share image renders as a broken card; no image renders as plain text. -->
+<meta name="twitter:title" content="Dead Thinkers — the dead still have something to say">
+<meta name="twitter:image" content="https://pr1m4lc0d3.github.io/deadthinkers-landing/assets/og-card.jpg">
 
-<!-- Empty data URI: keeps the browser from requesting a favicon that isn't drawn yet. -->
-<link rel="icon" href="data:,">
+<!-- The seal, not the engraved mark: at 16-32px a fine engraving turns to mud,
+     while a wax disc keeps its silhouette and its one distinctive colour. -->
+<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 
 <link rel="stylesheet" href="assets/tokens.css">
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
 
+<img class="emblem" src="assets/mark-skull-quill.jpg" alt="">
+
 <main class="sheet">
 
-  <!-- The vanitas plate. Add class "has-art" once hero-vanitas.png lands. -->
-  <div class="frontispiece">
+  <div class="frontispiece has-art" role="img"
+       aria-label="A candlelit vanitas still life: a skull on a scholar's desk beside an inkwell and quill, a half-written letter sealed in red wax, three clasped folios and an hourglass.">
     <span class="plate-device">
       Here lies the frontispiece
       <em>a skull, an inkwell, a quill, and a letter left unfinished</em>
@@ -64,6 +79,8 @@
   </div>
 
 </main>
+
+<img class="stamp" src="assets/seal-summon.jpg" alt="">
 
 <footer class="colophon">
   <span>deadthinkers.com &mdash; the library is being written</span>

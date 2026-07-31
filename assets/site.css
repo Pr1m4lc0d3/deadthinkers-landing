@@ -40,11 +40,15 @@ body {
   line-height: var(--lead-body);
   color: var(--ink);
 
-  /* Paper photograph over the paper colour — absent asset degrades to colour. */
+  /* Paper photograph over the paper colour — absent asset degrades to colour.
+     The source sheet's deckled edge and torn corner are cropped off upstream;
+     what ships is the clean interior field, so `cover` never reveals a border. */
   background-color: var(--paper);
-  background-image: url("paper-ground.png");
+  background-image: url("paper-ground.jpg");
   background-size: cover;
   background-position: center;
+  /* No `background-attachment: fixed` — it janks or mis-scales on iOS, and a
+     page that never scrolls gains nothing from it. */
 
   text-rendering: optimizeLegibility;
 }
@@ -78,7 +82,7 @@ body {
   position: relative;
   aspect-ratio: 3 / 2;
   background-color: var(--plate);
-  background-image: url("hero-vanitas.png");
+  background-image: url("hero-vanitas.jpg");
   background-size: cover;
   background-position: center;
   border-radius: var(--radius);
@@ -142,14 +146,15 @@ body {
   white-space: nowrap;
 }
 
+/* An engraved fleuron rule cut from the ornaments plate. It is white-ground
+   line art, so `multiply` drops the white and lets the paper's fibre read
+   straight through the ink — no keying, and therefore no halo. */
 .rule {
-  height: 1px;
+  height: clamp(13px, 1.8vw, 22px);
   border: 0;
   margin: var(--s3) 0;
-  background: linear-gradient(
-    to right,
-    var(--rule) 0%, var(--rule) 62%, transparent 100%
-  );
+  background: url("rule-fleuron.jpg") left center / contain no-repeat;
+  mix-blend-mode: multiply;
 }
 
 .epitaph {
@@ -241,6 +246,44 @@ body {
 
 /* Deliberately stays fixed at every height. Making it static on short screens
    added flow height at exactly the viewport where there was none to give. */
+
+/* ==========================================================================
+   SECTION — fixed marks: the letterhead emblem and the wax seal
+   Both are DECORATION, so both are out of flow. That is the whole point: the
+   page promises one screen, and anything in flow spends fold budget. These
+   spend none, which is why they can exist at all.
+   Both are white-ground art composited with `multiply`, so they must sit on
+   PAPER. Multiply over the dark frontispiece plate would crush them to black —
+   that is why the seal is not stamped on the plate corner, where it would
+   otherwise belong.
+   ========================================================================== */
+
+.emblem,
+.stamp {
+  position: fixed;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  user-select: none;
+}
+
+.emblem {
+  top: var(--frame);
+  left: var(--frame);
+  width: clamp(64px, 7vw, 96px);
+  opacity: 0.92;
+}
+
+.stamp {
+  right: var(--frame);
+  bottom: calc(var(--frame) + 1.6rem);
+  width: clamp(68px, 7vw, 104px);
+  transform: rotate(-7deg);
+}
+
+/* Hidden wherever the layout stacks or the corners get crowded — a decoration
+   that collides with the words is worse than no decoration. */
+@media (max-width: 1000px), (max-height: 700px) { .stamp  { display: none; } }
+@media (max-width: 860px),  (max-height: 640px) { .emblem { display: none; } }
 
 /* Dark-mode browsers force-invert a cream page and the ink reads white.
    Declaring the scheme keeps the paper as paper. */
