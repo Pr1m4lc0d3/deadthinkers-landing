@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Dead Thinkers — the dead still have something to say</title>
-<meta name="description" content="A wiki of history's great minds that talks back. Read the page, then speak with the mind itself — free, with your own key, and nothing to sign.">
+<meta name="description" content="A wiki of history's great minds that talks back. Read the page, then speak with the mind itself — free, with your own key. Being built now; join the waiting list.">
 
 <link rel="canonical" href="https://deadthinkers.com/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://deadthinkers.com/">
 <meta property="og:title" content="Dead Thinkers — the dead still have something to say">
-<meta property="og:description" content="A wiki of history's great minds that talks back. Read the page, then speak with the mind itself — free, with your own key, and nothing to sign.">
+<meta property="og:description" content="A wiki of history's great minds that talks back. Read the page, then speak with the mind itself — free, with your own key. Being built now; join the waiting list.">
 <meta property="og:image" content="https://deadthinkers.com/assets/og-card.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -22,6 +22,12 @@
 
 <!-- The seal, not the engraved mark: at 16-32px a fine engraving turns to mud,
      while a wax disc keeps its silhouette and its one distinctive colour. -->
+<!-- The PNGs are listed FIRST and deliberately live at fresh URLs. This domain
+     served a GoDaddy parked page for months, and browsers cache a favicon far
+     harder than a page — a stale /favicon.ico survives an ordinary reload. A
+     path with no history cannot be served from that cache. -->
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
 <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
@@ -31,6 +37,7 @@
 <!-- Measurement ID lives in analytics.js and nowhere else. The colophon names
      this out loud — see the note there. -->
 <script src="assets/analytics.js" defer></script>
+<script src="assets/enrol.js" defer></script>
 </head>
 <body>
 
@@ -64,15 +71,20 @@
         <li><strong>Then speak with them</strong> &mdash; in their own voice, knowing
             nothing after the year they died.</li>
         <li><strong>Free, and quiet</strong> &mdash; your key never leaves your browser.
-            No account, no address, nothing to sign.</li>
+            No account to read, and none to summon.</li>
       </ul>
 
-      <a class="seal" href="https://deliberon.com/for-students">
-        Meet your first great mind &rarr;
-      </a>
+      <form class="enrol" id="enrol"
+            action="https://app.kit.com/forms/9749180/subscriptions" method="post">
+        <label class="sr-only" for="enrol-email">Your email address</label>
+        <input id="enrol-email" type="email" name="email_address" required
+               autocomplete="email" placeholder="your address">
+        <button class="seal" type="submit">Send word when it opens</button>
+      </form>
 
       <p class="aside">
-        Not open yet. The engine it is built on already is.
+        <strong>It isn&rsquo;t built yet.</strong> One letter when it opens, and nothing else
+        &mdash; <a href="#status">what that means &darr;</a>
       </p>
 
     </div>
@@ -176,7 +188,48 @@
 
 
 <!-- ==========================================================================
-     BAND 3 — the honest limitation, which is also the pitch
+     BAND 3 — what actually exists. No date, because there isn't one.
+     ========================================================================== -->
+<section class="band" id="status">
+  <div class="band-inner">
+
+    <h2>Where this stands</h2>
+
+    <p class="band-note">
+      Plainly, so you know what you are waiting for.
+    </p>
+
+    <dl class="status">
+      <div>
+        <dt>Working today</dt>
+        <dd>The persona engine. The Machiavelli exchange above came out of it, unedited.
+            That was always going to be the hard part, and it already exists.</dd>
+      </div>
+      <div>
+        <dt>Not built yet</dt>
+        <dd>Nearly everything else on this page. There is no wiki, no three hundred pages,
+            no summoning. You are reading a description of an intention.</dd>
+      </div>
+      <div>
+        <dt>What has to happen</dt>
+        <dd>Pull the facts from the public record, write and read the prose before any of it
+            is indexed, then wire the summoning to your own key.</dd>
+      </div>
+    </dl>
+
+    <p class="band-note">
+      <em>We are not putting a date on it.</em> There is more on the bench than can ship at
+      once, and a date invented this morning would be the first thing on this site that
+      wasn&rsquo;t true. Leave an address and you get one letter, on the day it opens.
+    </p>
+
+  </div>
+</section>
+
+
+<!-- ==========================================================================
+     BAND 4 — the honest limitation, which is also the pitch.
+     The ONLY button on the site that goes to Deliberon, and it sits last.
      ========================================================================== -->
 <section class="band" id="table">
   <div class="band-inner">
@@ -196,9 +249,9 @@
     </table>
 
     <p class="band-note">
-      You can talk to Plato here. You cannot make Plato and Nietzsche argue in front of you
-      with a chairman keeping order &mdash; that is Deliberon, and this free thing is an
-      honest demonstration of exactly what it is missing.
+      You will be able to talk to Plato here. You will not be able to make Plato and
+      Nietzsche argue in front of you with a chairman keeping order &mdash; that is
+      Deliberon, it exists now, and you can sit at that table today.
     </p>
 
     <a class="seal" href="https://deliberon.com/for-students">
@@ -211,9 +264,10 @@
 
 <footer class="colophon">
   <p class="ledger">
-    A note on the ledger: we count page visits with Google Analytics &mdash; never your
-    key, never your conversation. Nothing else is collected, and there is nothing to
-    sign up for.
+    A note on the ledger: we count page visits with Google Analytics, and if you join the
+    waiting list we hold your address until there is something to tell you. Never your key,
+    never your conversation &mdash; those are not sent anywhere, because the summoning runs
+    in your own browser against your own provider.
   </p>
   <div class="colophon-line">
     <span>deadthinkers.com &mdash; the library is being written</span>

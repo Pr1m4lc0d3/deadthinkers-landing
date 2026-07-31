@@ -172,6 +172,59 @@ body {
   font-style: italic;
   color: var(--ink-faint);
 }
+.aside strong { font-weight: 400; font-style: normal; color: var(--ink-soft); }
+.aside a { color: inherit; }
+
+/* ==========================================================================
+   SECTION — the waiting list
+   Posts straight to Kit; no Kit JavaScript is loaded, so the only third party
+   on this page is the analytics tag the colophon declares.
+   ========================================================================== */
+
+.enrol {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--s2);
+  margin: 0;
+}
+
+.enrol input[type="email"] {
+  flex: 1 1 15ch;
+  min-width: 0;
+  max-width: 26ch;
+  padding: 0.6em 0.85em 0.56em;
+  font-family: inherit;
+  font-size: var(--t-body);
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.42);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+.enrol input[type="email"]::placeholder { color: var(--ink-faint); font-style: italic; }
+.enrol input[type="email"]:focus-visible {
+  outline: none;
+  border-color: var(--wax);
+  box-shadow: 0 0 0 3px rgba(140, 28, 19, 0.18);
+}
+
+.enrol button { cursor: pointer; font-family: inherit; background: none; }
+
+.enrol-done {
+  margin: 0;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* Visible to screen readers only. */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
 /* --- The CTA: the one piece of wax in the type ---------------------------- */
 
@@ -352,7 +405,30 @@ blockquote footer {
 }
 blockquote footer strong { color: var(--ink-soft); font-weight: 400; }
 
-/* --- Band 3: the comparison ----------------------------------------------- */
+/* --- Band 3: build status -------------------------------------------------- */
+
+.status { margin: 0 0 var(--s3); }
+.status > div {
+  display: grid;
+  grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
+  gap: clamp(0.6rem, 2.5vw, 2rem);
+  padding: 0.75em 0;
+  border-bottom: 1px solid rgba(184, 165, 134, 0.5);
+}
+.status > div:first-child { border-top: 1px solid rgba(184, 165, 134, 0.5); }
+.status dt {
+  font-size: var(--t-small);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.status dd { margin: 0; color: var(--ink-soft); max-width: 58ch; }
+
+@media (max-width: 700px) {
+  .status > div { grid-template-columns: 1fr; gap: 0.25rem; }
+}
+
+/* --- Band 4: the comparison ----------------------------------------------- */
 
 /* A real table, because this is a real comparison — and without the column
    headings a reader cannot tell which side is which, which was the whole
