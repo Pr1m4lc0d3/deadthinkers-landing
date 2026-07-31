@@ -351,27 +351,36 @@ body {
 
 /* --- Band 2: the specimen ------------------------------------------------- */
 
-.specimen {
-  display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(1.4rem, 4vw, 3rem);
-}
-@media (max-width: 860px) { .specimen { grid-template-columns: 1fr; } }
+/* The band is one column with the cameo floated into it, so the text closes
+   around the frame the way a plate sits in a book. It replaced a two-column
+   grid and the generic quill plate — a portrait of the man actually speaking
+   does more work than atmosphere, and the invented calligraphy in that plate
+   was a standing liability on a fact-provenance site. */
+.specimen::after { content: ""; display: block; clear: both; }
 
-/* Deliberately small. The calligraphy in this plate is model-invented period
-   prose, not a real quotation — on a site whose whole claim is fact
-   provenance, it may be atmosphere but must never be legible enough to read
-   as a source. */
-.specimen-plate {
-  aspect-ratio: 2 / 1;
-  background: var(--plate) url("quill-writing.jpg") center / cover no-repeat;
-  border-radius: var(--radius);
-  box-shadow:
-    0 0 0 1px var(--rule),
-    0 0 0 clamp(5px, 0.9vw, 10px) var(--paper-deep),
-    0 0 0 calc(clamp(5px, 0.9vw, 10px) + 1px) var(--rule),
-    0 clamp(5px, 1.1vw, 12px) clamp(12px, 2.4vw, 26px) rgba(43, 32, 24, 0.2);
+.cameo {
+  float: left;
+  width: clamp(150px, 21vw, 246px);
+  margin: 0.2rem clamp(1.1rem, 2.6vw, 2.1rem) var(--s2) 0;
+}
+.cameo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* White-ground art on paper: multiply drops the ground and lets the fibre
+     read through the engraving, same as every other plate here. */
+  mix-blend-mode: multiply;
+}
+
+/* Floating a tall portrait beside a narrow column leaves slivers of text two
+   or three words wide. Below this it sits centred and the prose runs full
+   width underneath. */
+@media (max-width: 700px) {
+  .cameo {
+    float: none;
+    width: min(60%, 220px);
+    margin: 0 auto var(--s3);
+  }
 }
 
 /* The question that produced the specimen. Without it the excerpt is just a
