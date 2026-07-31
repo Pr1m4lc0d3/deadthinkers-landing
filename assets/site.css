@@ -306,7 +306,21 @@ body {
     0 clamp(5px, 1.1vw, 12px) clamp(12px, 2.4vw, 26px) rgba(43, 32, 24, 0.2);
 }
 
+/* The question that produced the specimen. Without it the excerpt is just a
+   nice sentence; with it, it is evidence. */
+.band-ask {
+  margin: 0 0 var(--s2);
+  font-size: var(--t-small);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
 blockquote { margin: 0 0 var(--s3); }
+/* A second excerpt from the same answer, not a second source — the ellipsis
+   marks the cut so the join is never mistaken for continuous text. */
+.quote-cont { text-indent: 0; }        /* the hanging-quote indent is wrong once the mark is an ellipsis */
+.quote-cont::before { content: "\2026\00A0\201C"; }
 blockquote p {
   margin: 0 0 var(--s2);
   font-size: var(--t-lede);
