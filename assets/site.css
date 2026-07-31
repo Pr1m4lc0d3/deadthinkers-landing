@@ -315,19 +315,26 @@ body {
 
 .band-inner { width: min(100%, 62rem); margin: 0 auto; }
 
+/* Headings centre; prose keeps a left edge for readability but the BLOCK is
+   centred. Ranging everything left inside a 62rem container left the right
+   half of every band empty, which read as a broken layout rather than a
+   choice. */
 .band h2 {
   margin: 0 0 var(--s3);
   font-size: clamp(1.24rem, 2.5vw, 1.85rem);
   font-weight: 400;
   line-height: 1.22;
   letter-spacing: 0.03em;
+  text-align: center;
 }
 
 .band-note {
-  margin: 0 0 var(--s3);
+  margin: 0 auto var(--s3);
   max-width: 58ch;
   color: var(--ink-soft);
 }
+/* The one paragraph that introduces a band reads as a standfirst, so it centres. */
+.band-lede { text-align: center; max-width: 54ch; }
 .band-note em { color: var(--ink); }
 .band .seal { margin-top: var(--s2); }
 
@@ -341,28 +348,69 @@ body {
   opacity: 0.88;
 }
 
-.names {
-  margin: 0 0 var(--s4);
-  max-width: 54ch;
-  font-size: var(--t-lede);
-  line-height: 1.75;
+/* --- The gallery of minds already summoned --------------------------------
+   A scroll-snap rail, not a JS carousel. Thirteen cameos are wider than any
+   band, so it has to scroll; doing that with the browser's own scrolling means
+   it works with a trackpad, a touchscreen, a scrollbar and a keyboard without
+   a line of script. */
+.gallery {
+  display: flex;
+  gap: clamp(0.9rem, 2.4vw, 1.6rem);
+  margin: 0 0 var(--s2);
+  padding: 0 0 var(--s2);
+  list-style: none;
+
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+  /* Bleed to the band edge so a partly-visible cameo signals "more this way". */
+  scroll-padding-inline: var(--frame);
 }
-.names i { font-style: normal; color: var(--rule); padding: 0 0.18em; }
+.gallery li {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  width: clamp(76px, 11vw, 108px);
+  text-align: center;
+}
+.gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+}
+.gallery span {
+  display: block;
+  margin-top: 0.45em;
+  font-size: var(--t-fine);
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+
+.gallery-note {
+  margin: 0 0 var(--s4);
+  text-align: center;
+  font-size: var(--t-fine);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
 
 /* --- Band 2: the specimen ------------------------------------------------- */
 
-/* The band is one column with the cameo floated into it, so the text closes
-   around the frame the way a plate sits in a book. It replaced a two-column
-   grid and the generic quill plate — a portrait of the man actually speaking
-   does more work than atmosphere, and the invented calligraphy in that plate
-   was a standing liability on a fact-provenance site. */
-.specimen::after { content: ""; display: block; clear: both; }
-
-.cameo {
-  float: left;
-  width: clamp(150px, 21vw, 246px);
-  margin: 0.2rem clamp(1.1rem, 2.6vw, 2.1rem) var(--s2) 0;
+/* ⛔ This was a float, and a float was wrong. Wrapping text around a tall
+   portrait gave a two-or-three-word sliver beside the frame and then a hard
+   jump to full width — the ragged edge read as broken, not as a book plate.
+   A real two-column grid keeps every line the same measure. */
+.specimen {
+  display: grid;
+  grid-template-columns: clamp(160px, 22vw, 248px) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1.3rem, 3.4vw, 2.6rem);
 }
+
+.cameo { margin: 0.3rem 0 0; }
 .cameo img {
   display: block;
   width: 100%;
@@ -372,15 +420,15 @@ body {
   mix-blend-mode: multiply;
 }
 
-/* Floating a tall portrait beside a narrow column leaves slivers of text two
-   or three words wide. Below this it sits centred and the prose runs full
-   width underneath. */
+/* The heading and prose live in the right column, so they keep a left edge
+   rather than taking the centred treatment the other bands use. */
+.specimen-text h2 { text-align: left; }
+.specimen-text .band-note { margin-inline: 0; max-width: none; }
+
 @media (max-width: 700px) {
-  .cameo {
-    float: none;
-    width: min(60%, 220px);
-    margin: 0 auto var(--s3);
-  }
+  .specimen { grid-template-columns: 1fr; }
+  .cameo { width: min(58%, 210px); margin: 0 auto; }
+  .specimen-text h2 { text-align: center; }
 }
 
 /* The question that produced the specimen. Without it the excerpt is just a
