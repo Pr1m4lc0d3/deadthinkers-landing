@@ -1,6 +1,10 @@
 /* ==========================================================================
    Dead Thinkers — holding page layout
-   One screen, no scroll. Every visual constant comes from tokens.css.
+   Every visual constant comes from tokens.css.
+
+   Structure: one `.screen` that is exactly a viewport tall at every size,
+   followed by `.band` sections that are a deliberate scroll. The screen's
+   fold budget is fixed; the bands' is not. Keep that line clean.
    ========================================================================== */
 
 /* --- Self-hosted body face --------------------------------------------------
@@ -10,31 +14,20 @@
 @font-face {
   font-family: "EB Garamond";
   src: url("fonts/eb-garamond-400.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+  font-weight: 400; font-style: normal; font-display: swap;
 }
 @font-face {
   font-family: "EB Garamond";
   src: url("fonts/eb-garamond-400-italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
+  font-weight: 400; font-style: italic; font-display: swap;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  min-height: 100svh;
-  display: grid;
-  place-items: center;
-  padding: var(--frame);
-  /* Reserve the colophon's band so the sheet can never sit under it. */
-  padding-bottom: calc(var(--frame) + 1.7rem);
-
   font-family: var(--face-body);
   font-size: var(--t-body);
   line-height: var(--lead-body);
@@ -42,23 +35,28 @@ body {
 
   /* Paper photograph over the paper colour — absent asset degrades to colour.
      The source sheet's deckled edge and torn corner are cropped off upstream;
-     what ships is the clean interior field, so `cover` never reveals a border. */
+     what ships is the clean interior field, so `cover` never reveals a border.
+     No `background-attachment: fixed` — it janks or mis-scales on iOS. */
   background-color: var(--paper);
   background-image: url("paper-ground.jpg");
   background-size: cover;
   background-position: center;
-  /* No `background-attachment: fixed` — it janks or mis-scales on iOS, and a
-     page that never scrolls gains nothing from it. */
 
   text-rendering: optimizeLegibility;
 }
 
 /* ==========================================================================
-   SECTION — the sheet
-   Two columns on a wide screen, stacked on a narrow one. Vertically centred
-   so the page reads as one composed leaf rather than a document that begins
-   at the top edge.
+   SECTION — the screen
    ========================================================================== */
+
+.screen {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: var(--frame);
+  padding-bottom: calc(var(--frame) + 2.4rem);   /* room for the scroll cue */
+}
 
 .sheet {
   width: min(100%, 66rem);
@@ -72,19 +70,12 @@ body {
   .sheet { grid-template-columns: 1fr; gap: var(--s3); }
 }
 
-/* ==========================================================================
-   SECTION — frontispiece
-   The vanitas plate. Holds its aspect whether or not the art has landed;
-   the placeholder device inside is switched off by .has-art.
-   ========================================================================== */
+/* --- The vanitas plate ---------------------------------------------------- */
 
 .frontispiece {
   position: relative;
   aspect-ratio: 3 / 2;
-  background-color: var(--plate);
-  background-image: url("hero-vanitas.jpg");
-  background-size: cover;
-  background-position: center;
+  background: var(--plate) url("hero-vanitas.jpg") center / cover no-repeat;
   border-radius: var(--radius);
 
   /* An engraved plate mark: hairline rule inset from a wider paper margin. */
@@ -93,9 +84,6 @@ body {
     0 0 0 clamp(6px, 1.1vw, 12px) var(--paper-deep),
     0 0 0 calc(clamp(6px, 1.1vw, 12px) + 1px) var(--rule),
     0 clamp(6px, 1.4vw, 16px) clamp(14px, 3vw, 34px) rgba(43, 32, 24, 0.22);
-
-  display: grid;
-  place-items: center;
 }
 
 @media (max-width: 860px), (max-height: 560px) {
@@ -107,29 +95,7 @@ body {
   .frontispiece { aspect-ratio: 16 / 5; }
 }
 
-.plate-device {
-  color: var(--rule);
-  font-size: var(--t-small);
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 2.2;
-  opacity: 0.72;
-  padding: var(--s3);
-}
-.plate-device em {
-  display: block;
-  font-style: italic;
-  text-transform: none;
-  letter-spacing: 0;
-  font-size: var(--t-fine);
-  opacity: 0.8;
-}
-.frontispiece.has-art .plate-device { display: none; }
-
-/* ==========================================================================
-   SECTION — the text column
-   ========================================================================== */
+/* --- The text column ------------------------------------------------------ */
 
 .leaf { max-width: var(--measure); }
 
@@ -163,37 +129,37 @@ body {
   font-style: italic;
   line-height: 1.34;
   letter-spacing: var(--track-lede);
-  color: var(--ink);
 }
 
 .thesis { margin: 0 0 var(--s3); color: var(--ink-soft); }
 
-/* --- What's coming: three beats, set as a marginal list ------------------- */
 .beats {
   margin: 0 0 var(--s4);
   padding: 0;
   list-style: none;
   color: var(--ink-soft);
 }
-.beats li {
-  position: relative;
-  padding-left: 1.5em;
-  margin-bottom: var(--s1);
-}
+.beats li { position: relative; padding-left: 1.5em; margin-bottom: var(--s1); }
 /* An engraved hairline rather than a fleuron glyph. A ❦ at this size renders
    as a smudge, and which smudge depends on whichever serif the machine has. */
 .beats li::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0.78em;
-  width: 0.9em;
-  height: 1px;
+  left: 0; top: 0.78em;
+  width: 0.9em; height: 1px;
   background: var(--rule);
 }
 .beats strong { color: var(--ink); font-weight: 400; }
 
-/* --- The seal: the one piece of wax on the page --------------------------- */
+.aside {
+  margin: var(--s2) 0 0;
+  font-size: var(--t-small);
+  font-style: italic;
+  color: var(--ink-faint);
+}
+
+/* --- The CTA: the one piece of wax in the type ---------------------------- */
+
 .seal {
   display: inline-block;
   color: var(--wax);
@@ -208,74 +174,34 @@ body {
   transition: background-color 140ms ease, color 140ms ease;
 }
 .seal:hover,
-.seal:focus-visible {
-  background-color: var(--wax);
-  color: var(--paper);
-  outline: none;
-}
+.seal:focus-visible { background-color: var(--wax); color: var(--paper); outline: none; }
 .seal:focus-visible { box-shadow: 0 0 0 3px rgba(140, 28, 19, 0.28); }
 
-.aside {
-  margin: var(--s2) 0 0;
-  font-size: var(--t-small);
-  font-style: italic;
-  color: var(--ink-faint);
-}
-
 /* ==========================================================================
-   SECTION — footer
-   Pinned to the frame so it never competes for the fold.
-   ========================================================================== */
-
-.colophon {
-  position: fixed;
-  left: var(--frame);
-  right: var(--frame);
-  bottom: calc(var(--frame) * 0.55);
-
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--s2);
-
-  font-size: var(--t-fine);
-  letter-spacing: 0.06em;
-  color: var(--ink-faint);
-}
-.colophon a { color: inherit; }
-
-/* Deliberately stays fixed at every height. Making it static on short screens
-   added flow height at exactly the viewport where there was none to give. */
-
-/* ==========================================================================
-   SECTION — fixed marks: the letterhead emblem and the wax seal
+   SECTION — the screen's two marks: letterhead emblem and wax seal
    Both are DECORATION, so both are out of flow. That is the whole point: the
-   page promises one screen, and anything in flow spends fold budget. These
-   spend none, which is why they can exist at all.
+   screen promises one viewport, and anything in flow spends fold budget.
+   They are absolute to `.screen`, NOT fixed — fixed would float them over the
+   bands during the scroll.
    Both are white-ground art composited with `multiply`, so they must sit on
    PAPER. Multiply over the dark frontispiece plate would crush them to black —
-   that is why the seal is not stamped on the plate corner, where it would
+   which is why the seal is not stamped on the plate corner, where it would
    otherwise belong.
    ========================================================================== */
 
-.emblem,
-.stamp {
-  position: fixed;
+.emblem, .stamp {
+  position: absolute;
   mix-blend-mode: multiply;
   pointer-events: none;
   user-select: none;
 }
-
 .emblem {
-  top: var(--frame);
-  left: var(--frame);
+  top: var(--frame); left: var(--frame);
   width: clamp(64px, 7vw, 96px);
   opacity: 0.92;
 }
-
 .stamp {
-  right: var(--frame);
-  bottom: calc(var(--frame) + 1.6rem);
+  right: var(--frame); bottom: calc(var(--frame) + 1.6rem);
   width: clamp(68px, 7vw, 104px);
   transform: rotate(-7deg);
 }
@@ -285,6 +211,169 @@ body {
 @media (max-width: 1000px), (max-height: 700px) { .stamp  { display: none; } }
 @media (max-width: 860px),  (max-height: 640px) { .emblem { display: none; } }
 
+/* --- Scroll cue ------------------------------------------------------------
+   The screen is a full viewport with no visible cut-off, so without this a
+   visitor has no reason to believe anything follows it. */
+.scroll-cue {
+  position: absolute;
+  left: 50%; bottom: calc(var(--frame) * 0.6);
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.35em;
+
+  font-size: var(--t-fine);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  text-decoration: none;
+}
+.scroll-cue::after {
+  content: "";
+  width: 1px; height: 1.5rem;
+  background: linear-gradient(to bottom, var(--rule), transparent);
+}
+.scroll-cue:hover { color: var(--ink-soft); }
+
+/* ==========================================================================
+   SECTION — the bands
+   ========================================================================== */
+
+.band {
+  padding: clamp(2.6rem, 7vh, 5rem) var(--frame);
+  border-top: 1px solid var(--rule);
+}
+/* Every other band takes a faint wash so the scroll reads as separate leaves
+   rather than one long column. */
+.band--alt { background-color: rgba(184, 165, 134, 0.14); }
+
+.band-inner { width: min(100%, 62rem); margin: 0 auto; }
+
+.band h2 {
+  margin: 0 0 var(--s3);
+  font-size: clamp(1.24rem, 2.5vw, 1.85rem);
+  font-weight: 400;
+  line-height: 1.22;
+  letter-spacing: 0.03em;
+}
+
+.band-note {
+  margin: 0 0 var(--s3);
+  max-width: 58ch;
+  color: var(--ink-soft);
+}
+.band-note em { color: var(--ink); }
+.band .seal { margin-top: var(--s2); }
+
+/* --- Band 1: the library -------------------------------------------------- */
+
+.emblem-strip {
+  display: block;
+  width: min(100%, 44rem);
+  margin: 0 0 var(--s4);
+  mix-blend-mode: multiply;
+  opacity: 0.88;
+}
+
+.names {
+  margin: 0 0 var(--s4);
+  max-width: 54ch;
+  font-size: var(--t-lede);
+  line-height: 1.75;
+}
+.names i { font-style: normal; color: var(--rule); padding: 0 0.18em; }
+
+/* --- Band 2: the specimen ------------------------------------------------- */
+
+.specimen {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.4rem, 4vw, 3rem);
+}
+@media (max-width: 860px) { .specimen { grid-template-columns: 1fr; } }
+
+/* Deliberately small. The calligraphy in this plate is model-invented period
+   prose, not a real quotation — on a site whose whole claim is fact
+   provenance, it may be atmosphere but must never be legible enough to read
+   as a source. */
+.specimen-plate {
+  aspect-ratio: 2 / 1;
+  background: var(--plate) url("quill-writing.jpg") center / cover no-repeat;
+  border-radius: var(--radius);
+  box-shadow:
+    0 0 0 1px var(--rule),
+    0 0 0 clamp(5px, 0.9vw, 10px) var(--paper-deep),
+    0 0 0 calc(clamp(5px, 0.9vw, 10px) + 1px) var(--rule),
+    0 clamp(5px, 1.1vw, 12px) clamp(12px, 2.4vw, 26px) rgba(43, 32, 24, 0.2);
+}
+
+blockquote { margin: 0 0 var(--s3); }
+blockquote p {
+  margin: 0 0 var(--s2);
+  font-size: var(--t-lede);
+  font-style: italic;
+  line-height: 1.44;
+  text-indent: -0.4em;   /* hang the opening quote mark */
+}
+blockquote p::before { content: "\201C"; }
+blockquote p::after  { content: "\201D"; }
+blockquote footer {
+  font-size: var(--t-small);
+  color: var(--ink-faint);
+  line-height: 1.5;
+}
+blockquote footer strong { color: var(--ink-soft); font-weight: 400; }
+
+/* --- Band 3: the comparison ----------------------------------------------- */
+
+/* A real table, because this is a real comparison — and without the column
+   headings a reader cannot tell which side is which, which was the whole
+   point of the band. */
+.compare {
+  width: 100%;
+  margin: 0 0 var(--s4);
+  border-collapse: collapse;
+  text-align: left;
+}
+.compare th,
+.compare td {
+  width: 50%;
+  padding: 0.62em clamp(0.6rem, 2vw, 1.8rem) 0.62em 0;
+  border-bottom: 1px solid rgba(184, 165, 134, 0.5);
+  font-weight: 400;
+  vertical-align: top;
+}
+.compare thead th {
+  font-size: var(--t-small);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  border-bottom-color: var(--rule);
+}
+.compare tbody td:first-child { color: var(--ink); }
+.compare tbody td:last-child  { color: var(--ink-soft); }
+
+/* ==========================================================================
+   SECTION — colophon
+   ========================================================================== */
+
+.colophon {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--s2);
+  padding: var(--s3) var(--frame) calc(var(--frame) + var(--s2));
+  border-top: 1px solid var(--rule);
+
+  font-size: var(--t-fine);
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+}
+.colophon a { color: inherit; }
+
 /* Dark-mode browsers force-invert a cream page and the ink reads white.
    Declaring the scheme keeps the paper as paper. */
 :root { color-scheme: only light; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
