@@ -268,7 +268,7 @@ body {
 .emblem-strip {
   display: block;
   width: min(100%, 44rem);
-  margin: 0 0 var(--s4);
+  margin: 0 auto var(--s4);   /* centred in the band, not ranged left */
   mix-blend-mode: multiply;
   opacity: 0.88;
 }
