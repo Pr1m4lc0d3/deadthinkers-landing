@@ -97,7 +97,14 @@ body {
 
 /* --- The text column ------------------------------------------------------ */
 
-.leaf { max-width: var(--measure); }
+/* The hero column is centred as a unit — masthead, rule, copy, CTA all share
+   one axis. The bands below stay ranged left, where a reading measure wants
+   a hard left edge; this is a title page, and a title page is centred. */
+.leaf {
+  max-width: var(--measure);
+  margin-inline: auto;
+  text-align: center;
+}
 
 /* Set on one line. Stacking it cost ~100px of fold on every laptop screen,
    and letterspaced caps carry the engraved-titlepage feel without the height. */
@@ -108,8 +115,21 @@ body {
   line-height: var(--lead-tight);
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  text-indent: 0.13em;   /* balance the trailing letterspace */
   white-space: nowrap;
+
+  /* The masthead is nowrap and genuinely wider than the 47ch prose measure, so
+     it cannot be centred by `text-align` OR by `fit-content` — both leave the
+     overflow hanging off one side (measured 24.9px right of the rest of the
+     stack). It has to escape the measure: max-content gives it its true width,
+     then left/translateX centres that box on .leaf however wide it ends up.
+     The left padding replaces the phantom trailing space letterspacing appends
+     after the final S, so the box is symmetrical around the glyphs. */
+  width: max-content;
+  max-width: none;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-left: 0.13em;
 }
 
 /* An engraved fleuron rule cut from the ornaments plate. It is white-ground
@@ -119,7 +139,7 @@ body {
   height: clamp(13px, 1.8vw, 22px);
   border: 0;
   margin: var(--s3) 0;
-  background: url("rule-fleuron.jpg") left center / contain no-repeat;
+  background: url("rule-fleuron.jpg") center / contain no-repeat;
   mix-blend-mode: multiply;
 }
 
@@ -139,16 +159,11 @@ body {
   list-style: none;
   color: var(--ink-soft);
 }
-.beats li { position: relative; padding-left: 1.5em; margin-bottom: var(--s1); }
-/* An engraved hairline rather than a fleuron glyph. A ❦ at this size renders
-   as a smudge, and which smudge depends on whichever serif the machine has. */
-.beats li::before {
-  content: "";
-  position: absolute;
-  left: 0; top: 0.78em;
-  width: 0.9em; height: 1px;
-  background: var(--rule);
-}
+/* Centred, so the hanging hairline markers are gone: a bullet pinned to a left
+   edge that no longer exists reads as a mistake. Spacing carries the rhythm
+   instead. */
+.beats li { margin-bottom: var(--s2); }
+.beats li:last-child { margin-bottom: 0; }
 .beats strong { color: var(--ink); font-weight: 400; }
 
 .aside {
