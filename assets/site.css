@@ -386,10 +386,6 @@ blockquote footer strong { color: var(--ink-soft); font-weight: 400; }
    ========================================================================== */
 
 .colophon {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--s2);
   padding: var(--s3) var(--frame) calc(var(--frame) + var(--s2));
   border-top: 1px solid var(--rule);
 
@@ -398,6 +394,26 @@ blockquote footer strong { color: var(--ink-soft); font-weight: 400; }
   color: var(--ink-faint);
 }
 .colophon a { color: inherit; }
+
+/* The site claims your key never leaves the browser. It also runs an analytics
+   tag. Both are true, and the second one is stated here rather than left for
+   someone to find in devtools — an undisclosed tracker underneath a privacy
+   claim is precisely what would discredit the claim. */
+.ledger {
+  margin: 0 auto var(--s3);
+  max-width: 62rem;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+}
+
+.colophon-line {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--s2);
+  max-width: 62rem;
+  margin: 0 auto;
+}
 
 /* Dark-mode browsers force-invert a cream page and the ink reads white.
    Declaring the scheme keeps the paper as paper. */
