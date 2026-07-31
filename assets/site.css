@@ -348,31 +348,24 @@ body {
   opacity: 0.88;
 }
 
-/* --- The gallery of minds already summoned --------------------------------
-   A scroll-snap rail, not a JS carousel. Thirteen cameos are wider than any
-   band, so it has to scroll; doing that with the browser's own scrolling means
-   it works with a trackpad, a touchscreen, a scrollbar and a keyboard without
-   a line of script. */
+/* --- The gallery ----------------------------------------------------------
+   ⛔ This was a 13-cameo scroll rail. The scrollbar was solving a problem the
+   count created. Six wraps instead: 6 across → 3×2 → 2×3, so it always divides
+   evenly and never leaves an orphan on the last row. */
 .gallery {
-  display: flex;
-  gap: clamp(0.9rem, 2.4vw, 1.6rem);
-  margin: 0 0 var(--s2);
-  padding: 0 0 var(--s2);
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  justify-items: center;
+  gap: clamp(0.9rem, 2.2vw, 1.5rem);
+  width: min(100%, 46rem);
+  margin: 0 auto var(--s2);
+  padding: 0;
   list-style: none;
+}
+.gallery li { width: 100%; max-width: 108px; text-align: center; }
 
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-  scrollbar-width: thin;
-  scrollbar-color: var(--rule) transparent;
-  /* Bleed to the band edge so a partly-visible cameo signals "more this way". */
-  scroll-padding-inline: var(--frame);
-}
-.gallery li {
-  flex: 0 0 auto;
-  scroll-snap-align: center;
-  width: clamp(76px, 11vw, 108px);
-  text-align: center;
-}
+@media (max-width: 760px) { .gallery { grid-template-columns: repeat(3, 1fr); width: min(100%, 24rem); } }
+@media (max-width: 400px) { .gallery { grid-template-columns: repeat(2, 1fr); width: min(100%, 17rem); } }
 .gallery img {
   display: block;
   width: 100%;
